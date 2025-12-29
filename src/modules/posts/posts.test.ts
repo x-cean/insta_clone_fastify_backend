@@ -12,6 +12,10 @@ describe("POST /posts", () => {
 
     const createdPost = { ...newPostPayload, id: 1 };
 
+    // mock the database
+
+    // adds a fake transactions object to Fastify
+    // simulating database behavior without touching SQLite
     app.decorate("transactions", {
       posts: {
         getById: jest.fn(),
@@ -22,12 +26,14 @@ describe("POST /posts", () => {
 
     app.register(postsRoutes);
 
+    // make a test request. app.inject(): Fastify's built-in method to simulate an HTTP request
     const response = await app.inject({
       method: "POST",
       url: "/posts",
       payload: newPostPayload,
     });
 
+    // asset the results
     expect(response.statusCode).toBe(201);
     expect(JSON.parse(response.payload)).toEqual(createdPost);
   });
