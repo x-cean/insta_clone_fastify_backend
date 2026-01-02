@@ -22,6 +22,11 @@ describe("POST /posts", () => {
         getAll: jest.fn(),
         create: jest.fn().mockReturnValue(createdPost),
       },
+      reels: {
+        create: jest.fn(),
+        getAll: jest.fn(),
+        getById: jest.fn(),
+      },
     });
 
     app.register(postsRoutes);
@@ -72,9 +77,15 @@ describe("GET /posts", () => {
         getAll: jest.fn().mockReturnValue(allPosts),
         create: jest.fn(),
       },
+      reels: {
+        create: jest.fn(),
+        getAll: jest.fn(),
+        getById: jest.fn(),
+      }
     });
 
     app.register(postsRoutes);
+    await app.ready();
 
     // make a test request
     const response = await app.inject({

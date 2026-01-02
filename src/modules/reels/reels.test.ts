@@ -41,6 +41,7 @@ describe("GET /reels/grid", () => {
     });
 
     app.register(reelsRoutes);
+    await app.ready();
 
     const response = await app.inject({
       method: "GET",
