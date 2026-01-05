@@ -38,6 +38,38 @@ async function databasePluginHelper(fastify: FastifyInstance) {
   );
 `);
 
+  // Create tagged_posts table
+  db.exec(`
+  CREATE TABLE IF NOT EXISTS tagged_posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    img_url TEXT NOT NULL,
+    caption TEXT,
+    tagged_by_user TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+`);
+
+// Seed tagged_posts if empty
+const taggedPostsCount = db.prepare('SELECT COUNT(*) as count FROM tagged_posts').get() as { count: number };
+if (taggedPostsCount.count === 0) {
+  const insertTaggedPost = db.prepare(`
+    INSERT INTO tagged_posts (img_url, caption, tagged_by_user)
+    VALUES (?, ?, ?)
+  `);
+
+  const taggedPosts = [
+    ['https://picsum.photos/400/400', 'Tagged in a beautiful sunset', '@mike_wheeler'],
+    ['https://picsum.photos/400/400', 'Great memories with friends', '@djo'],
+    ['https://picsum.photos/400/400', 'Adventure time!', '@el_eleven'],
+  ];
+
+  for (const post of taggedPosts) {
+    insertTaggedPost.run(...post);
+  }
+
+  fastify.log.info(`Seeded ${taggedPosts.length} tagged posts.`);
+}
+
   const transactions = createTransactionHelpers(db);
 
   fastify.decorate("db", db);
