@@ -49,26 +49,59 @@ async function databasePluginHelper(fastify: FastifyInstance) {
   );
 `);
 
-// Seed tagged_posts if empty
-const taggedPostsCount = db.prepare('SELECT COUNT(*) as count FROM tagged_posts').get() as { count: number };
-if (taggedPostsCount.count === 0) {
-  const insertTaggedPost = db.prepare(`
-    INSERT INTO tagged_posts (img_url, caption, tagged_by_user)
-    VALUES (?, ?, ?)
-  `);
+  // Seed tagged_posts if empty
+  const taggedPostsCount = db.prepare('SELECT COUNT(*) as count FROM tagged_posts').get() as { count: number };
+  if (taggedPostsCount.count === 0) {
+    const insertTaggedPost = db.prepare(`
+      INSERT INTO tagged_posts (img_url, caption, tagged_by_user)
+      VALUES (?, ?, ?)
+    `);
 
-  const taggedPosts = [
-    ['https://picsum.photos/400/400', 'Tagged in a beautiful sunset', '@mike_wheeler'],
-    ['https://picsum.photos/400/400', 'Great memories with friends', '@djo'],
-    ['https://picsum.photos/400/400', 'Adventure time!', '@el_eleven'],
-  ];
+    const taggedPosts = [
+      ['https://picsum.photos/400/400', 'Tagged in a beautiful sunset', '@mike_wheeler'],
+      ['https://picsum.photos/400/400', 'Great memories with friends', '@djo'],
+      ['https://picsum.photos/400/400', 'Adventure time!', '@el_eleven'],
+    ];
 
-  for (const post of taggedPosts) {
-    insertTaggedPost.run(...post);
+    for (const post of taggedPosts) {
+      insertTaggedPost.run(...post);
+    }
+
+    fastify.log.info(`Seeded ${taggedPosts.length} tagged posts.`);
   }
 
-  fastify.log.info(`Seeded ${taggedPosts.length} tagged posts.`);
-}
+  db.exec(`
+  CREATE TABLE IF NOT EXISTS highlights (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cover_img_url TEXT NOT NULL,
+    title TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+`);
+
+  // Seed highlights if empty
+  const highlightsCount = db.prepare('SELECT COUNT(*) as count FROM highlights').get() as { count: number };
+  if (highlightsCount.count === 0) {
+    const insertHighlight = db.prepare(`
+      INSERT INTO highlights (cover_img_url, title)
+      VALUES (?, ?)
+    `);
+
+    const highlights = [
+      ['https://picsum.photos/100/100', 'Travel'],
+      ['https://picsum.photos/100/100', 'Food'],
+      ['https://picsum.photos/100/100', 'Friends'],
+      ['https://picsum.photos/100/100', 'Fitness'],
+      ['https://picsum.photos/100/100', 'Music'],
+    ];
+
+    for (const highlight of highlights) {
+      insertHighlight.run(...highlight);
+    }
+
+    fastify.log.info(`Seeded ${highlights.length} highlights.`);
+  }
+
 
   const transactions = createTransactionHelpers(db);
 
