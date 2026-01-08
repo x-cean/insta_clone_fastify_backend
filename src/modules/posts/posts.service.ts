@@ -13,6 +13,12 @@ type CreatePostServiceArgs = {
 
 export const postsService = (fastify: FastifyInstance) => {
   return {
+    getAll: async () => {
+      fastify.log.info("Getting all posts");
+      const posts = fastify.transactions.posts.getAll();
+      return posts;
+    },
+
     create: async (data: CreatePostServiceArgs) => {
       fastify.log.info(`Creating a new post`);
 

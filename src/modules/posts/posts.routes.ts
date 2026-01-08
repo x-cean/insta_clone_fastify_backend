@@ -13,6 +13,17 @@ const createPostSchema = z.object({
 const postsRoutes: FastifyPluginAsync = async (fastify: FastifyInstance) => {
   const service = postsService(fastify);
 
+  // GET all posts
+  fastify.get("/posts", async (request, reply) => {
+    try {
+      const posts = await service.getAll();
+      return reply.code(200).send(posts);
+    } catch (error) {
+      fastify.log.error(error);
+      return reply.code(500).send({ message: "Failed to retrieve posts" });
+    }
+  });
+
   fastify.post("/posts", async (request, reply) => {
     // Ensure the request is multipart
     if (!request.isMultipart()) {
