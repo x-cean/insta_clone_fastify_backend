@@ -39,11 +39,13 @@ fastify.get("/", function (request, reply) {
   reply.send({ hello: "world" });
 });
 
-const port = 3000;
+const port = parseInt(process.env.PORT || "3000", 10);
+const host = process.env.NODE_ENV === "production" ? "0.0.0.0" : "localhost";
 
-fastify.listen({ port }, function (err, address) {
+fastify.listen({ port, host }, function (err, address) {
   if (err) {
     fastify.log.error(err);
     process.exit(1);
   }
+  fastify.log.info(`Server listening at ${address}`);
 });
