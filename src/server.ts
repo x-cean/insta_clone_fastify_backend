@@ -1,4 +1,5 @@
 import Fastify from "fastify";
+import cors from "@fastify/cors";
 import { databasePlugin } from "./core/database/database.plugin";
 import { postsRoutes } from "./modules/posts/posts.routes";
 import { reelsRoutes } from "./modules/reels/reels.routes";
@@ -12,6 +13,15 @@ import { randomUUID } from "crypto";
 
 const fastify = Fastify({
   logger: true,
+});
+
+// Register CORS to allow frontend access
+fastify.register(cors, {
+  origin: [
+    "http://localhost:5173", // Vite dev server
+    "https://insta-clone-react-frontend-alpha.vercel.app/", // Deployed frontend
+  ],
+  credentials: true,
 });
 
 // Register multipart plugin
