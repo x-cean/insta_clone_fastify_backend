@@ -1,3 +1,4 @@
+import "dotenv/config"; // Load environment variables from .env file
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import { databasePlugin } from "./core/database/database.plugin";

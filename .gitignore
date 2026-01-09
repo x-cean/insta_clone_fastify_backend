@@ -1,6 +1,8 @@
 # Data
 #database.db
 
+.env
+
 # Logs
 logs
 *.log
