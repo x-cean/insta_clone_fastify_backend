@@ -1,23 +1,10 @@
-# Getting Started with [Fastify-CLI](https://www.npmjs.com/package/fastify-cli)
-This project was bootstrapped with Fastify-CLI.
+# Insta Cloned!
 
-## Available Scripts
+This is a simple Instagram clone built to get around TS, JS and React. 
+The project allows users to browse around and create posts with images and captions.
 
-In the project directory, you can run:
+### Demon:
+Deployed on Vercel and currently doesn't support display of uploaded images.
 
-### `npm run dev`
-
-To start the app in dev mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-### `npm start`
-
-For production mode
-
-### `npm run test`
-
-Run the test cases.
-
-## Learn More
-
-To learn Fastify, check out the [Fastify documentation](https://fastify.dev/docs/latest/).
+### Local Setup Instructions:
+clone the frontend and backend repos from github and run with "npm run dev".
