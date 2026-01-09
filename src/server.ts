@@ -19,7 +19,7 @@ const fastify = Fastify({
 fastify.register(cors, {
   origin: [
     "http://localhost:5173", // Vite dev server
-    "https://insta-clone-react-frontend-alpha.vercel.app/", // Deployed frontend
+    "https://insta-clone-react-frontend-alpha.vercel.app", // Deployed frontend
   ],
   credentials: true,
 });
