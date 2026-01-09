@@ -16,7 +16,10 @@ export const fileStorageService = {
 
     await fs.writeFile(filePath, fileBuffer);
 
-    // Return the public URL path
-    return `/uploads/${uniqueFilename}`;
+    // Return the full public URL
+    // In production, use the deployed backend URL; locally use localhost
+    const baseUrl = process.env.BASE_URL || "http://localhost:3000";
+    return `${baseUrl}/uploads/${uniqueFilename}`;
   },
 };
+
